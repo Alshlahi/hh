@@ -1,0 +1,13 @@
+{
+  "name": "PWA Demo",
+  "short_name": "PWA",
+  "description": "A simple PWA demo",
+  "display": "standalone",
+  "start_url": "page.html",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "192x192"
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-title" content="PWA Demo">
+	<link rel="manifest" href="/manifest.json">
+	<title>PWA Demo</title>
+	
+	 <style>
+        body {
+            font-family: Arial, sans-serif;
+			font-size: 20px;
+            font-weight: bold;
+			
+        }
+        .form-container {
+            margin: 50px auto;
+            width: 400px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+			
+        }
+        .form-title {
+            text-align: center;
+            font-size: 30px;
+            font-weight: bold;
+			color:blue;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+			font-size: 20px;
+        }
+        .table th, .table td {
+            border: 5px solid #ccc;
+            padding: 5px;
+        }
+        .table th {
+            background-color: #ddd;
+			font-size: 20px;
+        }
+        .table td.day {
+            text-align: center;
+        }
+		.image-box {
+            width: 800px;
+            height: 400px;
+            border: 1px solid #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+			padding: 20px;
+			margin: 50px auto;
+        }
+        .image-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+	<div class="form-container">
+        <h2 class="form-title">معلومات الحادث</h2>
+        <table class="table">
+            <tr>
+                <th>اليوم والتاريخ</th>
+                <td>
+                    <input type="date" id="date">
+                </td>
+            </tr>
+            <tr>
+                <th>الوقت</th>
+                <td>
+                    <input type="time" id="time">
+                </td>
+            </tr>
+            <tr>
+                <th>الموقع</th>
+                <td>
+                    <input type="text" id="place">
+                </td>
+            </tr>
+            <tr>
+                <th>نوع الحادث</th>
+                <td>
+                    <select id="accident-type">
+                        
+                        <option value="حريق">حريق</option>
+                        <option value="أنقاذ">أنقاذ</option>
+                        <option value="مشاركة">مشاركة أمنية</option>
+                        <option value="آخر">آخر</option>
+                    </select>
+                </td>
+            </tr>
+			
+			<tr>
+                <th>أسم الموثق</th>
+                <td>
+                    <select id="phtographer_name">
+                        
+                        <option value="أمجد">أمجد الجهني</option>
+                        <option value="فؤاد">فؤاد البلادي</option>
+                        <option value="عماد">عماد المطيري</option>
+                        <option value="آخر">آخر</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+	<div class="image-box">
+        <img src="https://via.placeholder.com/800x400">
+	</div>
+	<div class="image-box">
+        <img src="https://via.placeholder.com/800x400">
+	</div>
+	<script>
+		const dateInput = document.getElementById('date');
+		dateInput.addEventListener('change', function() {
+		const day = new Date(this.value).getDay();
+		const dayName = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+		const dayCell = document.querySelector('.table td.day');
+		dayCell.textContent = dayName[day];		});
+	</script>
+	<script>
+        const imageBox = document.querySelector('.image-box');
+        const imageInput = document.createElement('input');
+        imageInput.type = 'file';
+        imageInput.accept = 'image/*';
+        imageInput.style.display = 'none'; // Hide input visually
+
+        imageBox.addEventListener('click', () => {
+            imageInput.click(); // Trigger file selection on click
+        });
+
+        imageInput.addEventListener('change', function() {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const image = new Image();
+                image.onload = function() {
+                    const currentWidth = image.naturalWidth;
+                    const currentHeight = image.naturalHeight;
+                    const scaleFactor = Math.min(imageBox.clientWidth / currentWidth, imageBox.clientHeight / currentHeight);
+                    image.style.transform = `scale(${scaleFactor})`;
+                    imageBox.querySelector('img').src = e.target.result; // Replace placeholder with uploaded image
+                };
+                image.src = e.target.result;
+            };
+            reader.readAsDataURL(this.files[0]);
+        });
+
+        document.body.appendChild(imageInput); // Add input element to the body
+    </script>
+  
+</body>
+</html>
